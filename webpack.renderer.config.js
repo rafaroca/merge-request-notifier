@@ -34,15 +34,15 @@ module.exports = merge(baseConfig, {
             },
             {
                 test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
+                use: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
                 test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.(ico|jpe?g|png|gif|eot|otf|webp|mp4|svg|ttf|woff|woff2)$/,
-                loaders: ['file-loader']
+                use: ['file-loader']
             },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
@@ -53,7 +53,7 @@ module.exports = merge(baseConfig, {
         ]
     },
     optimization: {
-        namedModules: true
+        moduleIds: 'named'
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
