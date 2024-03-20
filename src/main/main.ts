@@ -5,8 +5,6 @@ import url from 'url'
 import electronSettings from 'electron-settings'
 import keytar from 'keytar'
 
-import { reportUnhandledRejections } from '../share/reportUnhandledRejections'
-
 import { macOsWindowPosition } from './positioning/mac-os'
 import { windowsWindowPosition } from './positioning/windows'
 import { linuxWindowPosition } from './positioning/linux'
@@ -81,7 +79,6 @@ const getWindowPosition = (triggeredFromTray: boolean) => {
 }
 
 const setup = async () => {
-    reportUnhandledRejections()
     log.transports.console.level = IS_DEV ? 'silly' : 'error'
     log.debug('Starting the app')
 
@@ -264,8 +261,6 @@ const updateGlobalShortcut = (shortcut: string) => {
 
 app.dock?.hide()
 
-app.allowRendererProcessReuse = true
-
 app.on('ready', () => {
     setup().then(() => {
         log.debug('Setup completed')
@@ -295,7 +290,7 @@ ipcMain.on('update-open-merge-requests', (_: any, openMergeRequests: number) => 
 })
 
 ipcMain.on('remove-config', (event: Electron.IpcMainEvent) => {
-    electronSettings.delete('config.v3')
+    electronSettings.unset('config.v3')
     keytar.deletePassword(KEYTAR_SERVICE, KEYTAR_ACCOUNT)
 
     event.returnValue = DEFAULT_CONFIG
